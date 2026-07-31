@@ -1,0 +1,11 @@
+Flask==2.3.3
+geopandas==0.14.3
+shapely==2.0.3
+fiona==1.9.5
+ezdxf==1.1.0
+matplotlib==3.8.2
+folium==0.15.1
+branca==0.6.0
+numpy==1.26.3
+pyproj==3.6.1
+pandas==2.1.4
