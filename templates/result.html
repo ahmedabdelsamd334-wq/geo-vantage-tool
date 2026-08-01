@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEOVANTAGE - النتائج</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="GEOVANTAGE" class="logo">
+            <h1>GEOVANTAGE</h1>
+            <p class="subtitle">تم التحويل بنجاح</p>
+        </div>
+
+        <!-- رسالة النجاح -->
+        <div class="success-message" style="background: #e8f5e9; padding: 18px 25px; border-radius: 12px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+            <i class="fas fa-check-circle" style="font-size: 28px; color: #2e7d32;"></i>
+            <span style="font-size: 17px; font-weight: 600; color: #1b5e20;">
+                {{ success_message }}
+            </span>
+        </div>
+
+        <div style="text-align: center; padding: 20px; background: #f0f4ff; border-radius: 12px; margin-bottom: 25px;">
+            <p style="font-size:16px;">
+                <i class="fas fa-info-circle" style="color: #1a237e;"></i>
+                تمت إضافة المشروع <strong>"{{ project_name }}"</strong> إلى الخريطة الرئيسية.
+            </p>
+            <p style="font-size:14px; color:#666;">
+                يمكنك العودة إلى <a href="/" style="color: #1a237e; font-weight:600;">الصفحة الرئيسية</a> لرؤية جميع المشاريع على خريطة واحدة.
+            </p>
+        </div>
+
+        <!-- أزرار التحميل -->
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 10px 0; margin-bottom: 20px;">
+            <a href="{{ url_for('download_shp', filename=shp_zip_filename) }}" style="background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 14px 40px; border-radius: 50px; font-size: 18px; font-weight: 700; text-decoration: none; display: inline-block; box-shadow: 0 4px 15px rgba(26,35,126,0.3);">
+                <i class="fas fa-database"></i> تحميل الشيب فايلات (ZIP)
+            </a>
+            {% if excel_filename %}
+                <a href="{{ url_for('download_excel', filename=excel_filename) }}" style="background: linear-gradient(135deg, #1e7e34, #0d6e2a); color: white; padding: 14px 40px; border-radius: 50px; font-size: 18px; font-weight: 700; text-decoration: none; display: inline-block; box-shadow: 0 4px 15px rgba(30,126,52,0.3);">
+                    <i class="fas fa-file-excel"></i> تحميل بيانات النقاط (Excel)
+                </a>
+            {% else %}
+                <span style="background: #ccc; color: #666; padding: 14px 40px; border-radius: 50px; font-size: 18px; font-weight: 700; display: inline-block;">
+                    <i class="fas fa-file-excel"></i> لا توجد نقاط
+                </span>
+            {% endif %}
+        </div>
+
+        <div style="text-align: center;">
+            <a href="/" class="btn-secondary" style="background: #6c757d; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; display: inline-block; font-weight: 600;">
+                <i class="fas fa-arrow-left"></i> العودة للخريطة الرئيسية
+            </a>
+            <a href="/upload_page" class="btn-secondary" style="background: #1a237e; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; display: inline-block; font-weight: 600; margin-right: 10px;">
+                <i class="fas fa-plus"></i> مشروع جديد
+            </a>
+        </div>
+
+        <div class="footer" style="margin-top: 30px;">
+            <p>© 2025 <strong>GEOVANTAGE</strong> - Your Spatial Advantage</p>
+        </div>
+    </div>
+</body>
+</html>
