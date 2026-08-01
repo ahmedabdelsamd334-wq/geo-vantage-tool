@@ -1,26 +1,25 @@
-# نستخدم صورة Python الرسمية (موجودة دايماً ومضمونة)
-FROM python:3.10-slim
+# نستخدم Python 3.9 لأنها مدعومة بشكل أفضل مع Fiona و GDAL
+FROM python:3.9-slim
 
-# نثبت مكتبات نظام التشغيل اللي محتاجها GDAL
+# نثبت GDAL من نظام التشغيل
 RUN apt-get update && apt-get install -y \
     gdal-bin \
     libgdal-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# نقول للنظام إن مكتبات GDAL موجودة فين
+# نحدد مسارات GDAL عشان pip يعرف مكانها
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
-# نحدد مجلد العمل جوه الحاوية
 WORKDIR /app
 
-# ننسخ ملف المكتبات الأول عشان نستفيد بالـ Cache
+# ننسخ ملف المكتبات أولاً
 COPY requirements.txt .
 
-# نثبت مكتبات بايثون (الـ GDAL مش هيتبنى من الصفر)
+# نثبت المكتبات (الآن fiona مش هيحاول يبني نفسه من الصفر)
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ننسخ باقي ملفات المشروع
+# ننسخ باقي الملفات
 COPY . .
 
 # أمر التشغيل
