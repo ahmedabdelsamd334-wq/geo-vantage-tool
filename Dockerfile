@@ -1,19 +1,27 @@
-FROM osgeo/gdal:ubuntu-full-3.6.4
+# نستخدم صورة Python الرسمية (موجودة دايماً ومضمونة)
+FROM python:3.10-slim
 
-# نثبت Python 3.10 لأن الصورة مش جايبة بايثون
+# نثبت مكتبات نظام التشغيل اللي محتاجها GDAL
 RUN apt-get update && apt-get install -y \
-    python3-pip \
-    python3-venv \
+    gdal-bin \
+    libgdal-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# نربط python3 بـ python عشان الأوامر تشتغل
-RUN ln -s /usr/bin/python3 /usr/bin/python
+# نقول للنظام إن مكتبات GDAL موجودة فين
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
+ENV C_INCLUDE_PATH=/usr/include/gdal
 
+# نحدد مجلد العمل جوه الحاوية
 WORKDIR /app
 
+# ننسخ ملف المكتبات الأول عشان نستفيد بالـ Cache
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
 
+# نثبت مكتبات بايثون (الـ GDAL مش هيتبنى من الصفر)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# ننسخ باقي ملفات المشروع
 COPY . .
 
+# أمر التشغيل
 CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8080"]
